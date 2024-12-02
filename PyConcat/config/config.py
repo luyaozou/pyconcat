@@ -50,8 +50,8 @@ class Prefs:
         self.nscreens = 1                 # number of screens
         self.geometry = (900, 600, 1280, 1080)              # window geometry
 
-        self.xfmt = '%.3f'
-        self.yfmt = '%.3f'
+        self.fmtX = '%.3f'
+        self.fmtY = '%.3f'
         self.avg1 = 1
         self.scale1 = 1
         self.avg2 = 1

@@ -63,6 +63,8 @@ class PyCCMainWin(QtWidgets.QMainWindow):
         self.dPref.accepted.connect(self.update_prefs)
         self.ui.box1.btnOpen.clicked.connect(self.open_file_1)
         self.ui.box2.btnOpen.clicked.connect(self.open_file_2)
+        self.ui.box1.btnClear.clicked.connect(self.clear_file_1)
+        self.ui.box2.btnClear.clicked.connect(self.clear_file_2)
         self.ui.box3.btnConcat.clicked.connect(self.concat)
         self.ui.box3.btnSave.clicked.connect(self.save)
         self.ui.box3.btnOverride.clicked.connect(self.override)
@@ -123,6 +125,20 @@ class PyCCMainWin(QtWidgets.QMainWindow):
         except Exception as e:
             msg('Error', str(e))
 
+    def clear_file_1(self):
+        self.x1 = np.zeros(0)
+        self.y1 = np.zeros(0)
+        self.ui.canvasFull.plot1(np.zeros(0), np.zeros(0))
+        self.ui.canvasDetail.plot1(np.zeros(0), np.zeros(0))
+        self._adjust_range()
+
+    def clear_file_2(self):
+        self.x2 = np.zeros(0)
+        self.y2 = np.zeros(0)
+        self.ui.canvasFull.plot2(np.zeros(0), np.zeros(0))
+        self.ui.canvasDetail.plot2(np.zeros(0), np.zeros(0))
+        self._adjust_range()
+
     def _adjust_range(self):
         """ Adjust x range of the two curves """
         # full range
@@ -153,10 +169,10 @@ class PyCCMainWin(QtWidgets.QMainWindow):
             self, 'Save Concatenated', self.prefs.export_dir, 'Spectral File (*.txt)')
         if filename:
             self.prefs.export_dir, _ = split_filename_dir(filename)
-            xfmt = self.ui.box3.inpFmtX.text()
-            yfmt = self.ui.box3.inpFmtY.text()
+            fmtX = self.ui.box3.inpFmtX.text()
+            fmtY = self.ui.box3.inpFmtY.text()
             try:
-                np.savetxt(filename, np.column_stack((self.xt, self.yt)), fmt=[xfmt, yfmt])
+                np.savetxt(filename, np.column_stack((self.xt, self.yt)), fmt=[fmtX, fmtY])
             except Exception as e:
                 msg('Error', str(e))
 

@@ -8,6 +8,7 @@ import pyqtgraph as pg
 from numpy import median, any
 from PyConcat.ui.common import create_int_spin_box, create_double_spin_box
 
+
 class MainUI(QtWidgets.QWidget):
 
     def __init__(self, prefs, parent=None):
@@ -46,6 +47,7 @@ class MainUI(QtWidgets.QWidget):
         mainLayout.addWidget(btns)
 
         self.setLayout(mainLayout)
+        self.load_prefs(prefs)
 
     def load_prefs(self, prefs):
         self.box1.inpAvg.setValue(prefs.avg1)
@@ -55,9 +57,9 @@ class MainUI(QtWidgets.QWidget):
         self.box3.inpFmtX.setText(prefs.fmtX)
         self.box3.inpFmtY.setText(prefs.fmtY)
         self.penMgr.load_prefs(prefs)
-        self.ui.canvasFull.refreshPen()
-        self.ui.canvasDetail.refreshPen()
-        self.ui.canvasCC.refreshPen()
+        self.canvasFull.refreshPen()
+        self.canvasDetail.refreshPen()
+        self.canvasCC.refreshPen()
 
     def fetch_prefs_(self, prefs):
         prefs.avg1 = self.box1.inpAvg.value()
@@ -196,6 +198,7 @@ class BoxFile(QtWidgets.QGroupBox):
         self.inpAvg = create_int_spin_box(1, minimum=1)
         self.inpScale = create_double_spin_box(1, minimum=0, dec=3)
         self.inpScale.setStepType(QtWidgets.QAbstractSpinBox.AdaptiveDecimalStepType)
+        self.btnClear = QtWidgets.QPushButton('Clear')
 
         avgLayout = QtWidgets.QHBoxLayout()
         avgLayout.addWidget(QtWidgets.QLabel('Average: '))
@@ -210,6 +213,7 @@ class BoxFile(QtWidgets.QGroupBox):
         thisLayout.addWidget(self.btnOpen)
         thisLayout.addLayout(avgLayout)
         thisLayout.addLayout(scaleLayout)
+        thisLayout.addWidget(self.btnClear)
         self.setLayout(thisLayout)
         self.setSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Fixed)
 
