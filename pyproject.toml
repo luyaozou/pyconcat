@@ -1,0 +1,55 @@
+[build-system]
+requires = ["setuptools>=42", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "PyConcat"
+version = "1.0.0"
+description = "Python Spectra Concatenation Tool"
+authors = [
+    {name = "Dr. Luyao ZOU", email = "luyao.zou@univ-littoral.fr"},
+]
+license = {text = "MIT"}
+requires-python = ">=3.8"
+dependencies = [
+    "docutils>=0.3",
+    "PyQt5>=5.15",
+    "pyqtgraph>=0.13.0",
+    "numpy>=1.10.1",
+    "scipy>=1.2.1",
+]
+keywords = ["spectra", "explorer", "concatenation", "manipulation", "visualization"]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Natural Language :: English",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Operating System :: OS Independent",
+    "Topic :: Scientific/Engineering",
+    "Topic :: Scientific/Engineering :: Physics",
+    "Topic :: Scientific/Engineering :: Visualization"
+]
+
+readme = {file = "README.md", content-type = "text/markdown"}
+
+[project.urls]
+homepage = "https://github.com/luyaozou/PyConcat"
+repository = "https://github.com/luyaozou/PyConcat"
+bug-tracker = "https://github.com/luyaozou/PyConcat/issues"
+
+[tool.setuptools.packages]
+find = {where = [".", "exclude=['data.*', 'test.*', 'src.*']"]}
+
+[tool.setuptools.package-data]
+"pse" = ["resources/*.png", "resources/*.ico"]
+
+[project.gui-scripts]
+pycc = "PyConcat.launch:launch"

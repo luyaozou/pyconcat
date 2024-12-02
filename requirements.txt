@@ -1,0 +1,5 @@
+docutils>=0.3
+PyQt5>=5.15
+pyqtgraph>=0.13.0
+numpy>=1.10.1
+scipy>=1.2.1
