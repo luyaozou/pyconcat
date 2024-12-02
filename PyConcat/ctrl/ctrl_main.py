@@ -65,6 +65,8 @@ class PyCCMainWin(QtWidgets.QMainWindow):
         self.ui.box2.btnOpen.clicked.connect(self.open_file_2)
         self.ui.box1.btnClear.clicked.connect(self.clear_file_1)
         self.ui.box2.btnClear.clicked.connect(self.clear_file_2)
+        self.ui.box1.inpYShift.valueChanged[float].connect(self.shift_y1)
+        self.ui.box2.inpYShift.valueChanged[float].connect(self.shift_y2)
         self.ui.box3.btnConcat.clicked.connect(self.concat)
         self.ui.box3.btnSave.clicked.connect(self.save)
         self.ui.box3.btnOverride.clicked.connect(self.override)
@@ -139,6 +141,14 @@ class PyCCMainWin(QtWidgets.QMainWindow):
         self.ui.canvasDetail.plot2(np.zeros(0), np.zeros(0))
         self._adjust_range()
 
+    def shift_y1(self, val):
+        self.ui.canvasFull.plot1(self.x1, self.y1 + val)
+        self.ui.canvasDetail.plot1(self.x1, self.y1 + val)
+
+    def shift_y2(self, val):
+        self.ui.canvasFull.plot2(self.x2, self.y2 + val)
+        self.ui.canvasDetail.plot2(self.x2, self.y2 + val)
+
     def _adjust_range(self):
         """ Adjust x range of the two curves """
         # full range
@@ -182,14 +192,16 @@ class PyCCMainWin(QtWidgets.QMainWindow):
         scale1 = self.ui.box1.inpScale.value()
         avg2 = self.ui.box2.inpAvg.value()
         scale2 = self.ui.box2.inpScale.value()
+        yshift1 = self.ui.box1.inpYShift.value()
+        yshift2 = self.ui.box2.inpYShift.value()
         try:
             # get overlap xrange
             xo_min, xo_max = self._find_overlap_range(self.x1.min(), self.x1.max(), self.x2.min(), self.x2.max())
             # check if the dimension of the two data are identical
             x1_to_cat = self.x1[(self.x1 > xo_min) & (self.x1 < xo_max)]
             x2_to_cat = self.x2[(self.x2 > xo_min) & (self.x2 < xo_max)]
-            y1_to_cat = self.y1[(self.x1 > xo_min) & (self.x1 < xo_max)]
-            y2_to_cat = self.y2[(self.x2 > xo_min) & (self.x2 < xo_max)]
+            y1_to_cat = self.y1[(self.x1 > xo_min) & (self.x1 < xo_max)] + yshift1
+            y2_to_cat = self.y2[(self.x2 > xo_min) & (self.x2 < xo_max)] + yshift2
             if x1_to_cat.shape != x2_to_cat.shape:
                 msg('Error', 'The two data have different dimensions')
                 return None

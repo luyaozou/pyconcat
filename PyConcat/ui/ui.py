@@ -52,8 +52,10 @@ class MainUI(QtWidgets.QWidget):
     def load_prefs(self, prefs):
         self.box1.inpAvg.setValue(prefs.avg1)
         self.box1.inpScale.setValue(prefs.scale1)
+        self.box1.inpYShift.setValue(prefs.yshift1)
         self.box2.inpAvg.setValue(prefs.avg2)
         self.box2.inpScale.setValue(prefs.scale2)
+        self.box2.inpYShift.setValue(prefs.yshift2)
         self.box3.inpFmtX.setText(prefs.fmtX)
         self.box3.inpFmtY.setText(prefs.fmtY)
         self.penMgr.load_prefs(prefs)
@@ -68,6 +70,8 @@ class MainUI(QtWidgets.QWidget):
         prefs.scale2 = self.box2.inpScale.value()
         prefs.fmtX = self.box3.inpFmtX.text()
         prefs.fmtY = self.box3.inpFmtY.text()
+        prefs.yshift1 = self.box1.inpYShift.value()
+        prefs.yshift2 = self.box2.inpYShift.value()
 
 
 class Canvas(pg.PlotWidget):
@@ -198,6 +202,7 @@ class BoxFile(QtWidgets.QGroupBox):
         self.inpAvg = create_int_spin_box(1, minimum=1)
         self.inpScale = create_double_spin_box(1, minimum=0, dec=3)
         self.inpScale.setStepType(QtWidgets.QAbstractSpinBox.AdaptiveDecimalStepType)
+        self.inpYShift = create_double_spin_box(0, dec=3)
         self.btnClear = QtWidgets.QPushButton('Clear')
 
         avgLayout = QtWidgets.QHBoxLayout()
@@ -208,11 +213,16 @@ class BoxFile(QtWidgets.QGroupBox):
         scaleLayout.addWidget(QtWidgets.QLabel('Scale: '))
         scaleLayout.addWidget(self.inpScale)
 
+        shiftLayout = QtWidgets.QHBoxLayout()
+        shiftLayout.addWidget(QtWidgets.QLabel('Y Shift: '))
+        shiftLayout.addWidget(self.inpYShift)
+
         thisLayout = QtWidgets.QVBoxLayout()
         thisLayout.setAlignment(QtCore.Qt.AlignTop | QtCore.Qt.AlignLeft)
         thisLayout.addWidget(self.btnOpen)
         thisLayout.addLayout(avgLayout)
         thisLayout.addLayout(scaleLayout)
+        thisLayout.addLayout(shiftLayout)
         thisLayout.addWidget(self.btnClear)
         self.setLayout(thisLayout)
         self.setSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Fixed)

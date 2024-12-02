@@ -56,6 +56,9 @@ class Prefs:
         self.scale1 = 1
         self.avg2 = 1
         self.scale2 = 1
+        self.yshift1 = 0
+        self.yshift2 = 0
+
 
 def _obj2dict(obj):
     """ Convert plain object to dictionary (for json dump) """
