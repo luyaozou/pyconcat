@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "PyConcat"
-version = "1.0.0"
+version = "1.0.1"
 description = "Python Spectra Concatenation Tool"
 authors = [
     {name = "Dr. Luyao ZOU", email = "luyao.zou@univ-littoral.fr"},
@@ -16,7 +16,6 @@ dependencies = [
     "PyQt5>=5.15",
     "pyqtgraph>=0.13.0",
     "numpy>=1.10.1",
-    "scipy>=1.2.1",
 ]
 keywords = ["spectra", "explorer", "concatenation", "manipulation", "visualization"]
 classifiers = [

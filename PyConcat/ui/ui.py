@@ -79,6 +79,7 @@ class Canvas(pg.PlotWidget):
         self.curve2 = pg.PlotCurveItem()
         self.addItem(self.curve1)
         self.addItem(self.curve2)
+        self.setLabel('bottom', 'Frequency')
         self.refreshPen()
 
         # keep track of the xrange of the spectrum

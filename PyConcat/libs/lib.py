@@ -15,7 +15,7 @@ import os
 # ------------------------------------------
 # ------ MESSAGE CONSTANT DECLARATION ------
 # ------------------------------------------
-VERSION = '1.0.0'
+VERSION = '1.0.1'
 
 _FILE_ERR_MSG = {0: '',  # Silent
                  1: '{:s} does not exist',  # FileNotFoundError
