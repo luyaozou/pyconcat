@@ -210,14 +210,19 @@ class PyCCMainWin(QtWidgets.QMainWindow):
         scale2 = self.ui.box2.inpScale.value()
         yshift1 = self.ui.box1.inpYShift.value()
         yshift2 = self.ui.box2.inpYShift.value()
+        # get transformed data
+        x1 = self.x1
+        x2 = self.x2
+        y1 = (self.y1 - np.median(self.y1)) * scale1 + np.median(self.y1) + yshift1
+        y2 = (self.y2 - np.median(self.y2)) * scale2 + np.median(self.y2) + yshift2
         try:
             # get overlap xrange
-            xo_min, xo_max = self._find_overlap_range(self.x1.min(), self.x1.max(), self.x2.min(), self.x2.max())
+            xo_min, xo_max = self._find_overlap_range(x1.min(), x1.max(), x2.min(), x2.max())
             # check if the dimension of the two data are identical
-            x1_to_cat = self.x1[(self.x1 > xo_min) & (self.x1 < xo_max)]
-            x2_to_cat = self.x2[(self.x2 > xo_min) & (self.x2 < xo_max)]
-            y1_to_cat = self.y1[(self.x1 > xo_min) & (self.x1 < xo_max)] + yshift1
-            y2_to_cat = self.y2[(self.x2 > xo_min) & (self.x2 < xo_max)] + yshift2
+            x1_to_cat = x1[(x1 > xo_min) & (x1 < xo_max)]
+            x2_to_cat = x2[(x2 > xo_min) & (x2 < xo_max)]
+            y1_to_cat = y1[(x1 > xo_min) & (x1 < xo_max)]
+            y2_to_cat = y2[(x2 > xo_min) & (x2 < xo_max)]
             if x1_to_cat.shape != x2_to_cat.shape:
                 msg('Error', 'The two data have different dimensions')
                 return None
@@ -226,21 +231,21 @@ class PyCCMainWin(QtWidgets.QMainWindow):
             return None
         # concatenate
         # 1. find left part
-        if self.x1.min() < xo_min:
-            x_left = self.x1[self.x1 <= xo_min]
-            y_left = self.y1[self.x1 <= xo_min]
+        if x1.min() < xo_min:
+            x_left = x1[x1 <= xo_min]
+            y_left = y1[x1 <= xo_min]
         else:
-            x_left = self.x2[self.x2 <= xo_min]
-            y_left = self.y2[self.x2 <= xo_min]
+            x_left = x2[x2 <= xo_min]
+            y_left = y2[x2 <= xo_min]
         # 2. find right part
-        if self.x1.max() > xo_max:
-            x_right = self.x1[self.x1 >= xo_max]
-            y_right = self.y1[self.x1 >= xo_max]
+        if x1.max() > xo_max:
+            x_right = x1[x1 >= xo_max]
+            y_right = y1[x1 >= xo_max]
         else:
-            x_right = self.x2[self.x2 >= xo_max]
-            y_right = self.y2[self.x2 >= xo_max]
+            x_right = x2[x2 >= xo_max]
+            y_right = y2[x2 >= xo_max]
         # 3. concatenate middle part
-        y_cat = (y1_to_cat * avg1 * scale1 + y2_to_cat * avg2 * scale2) / (avg1 + avg2)
+        y_cat = (y1_to_cat * avg1 + y2_to_cat * avg2) / (avg1 + avg2)
         # put everything together
         self.xt = np.concatenate((x_left, x1_to_cat, x_right))
         self.yt = np.concatenate((y_left, y_cat, y_right))
