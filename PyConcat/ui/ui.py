@@ -98,23 +98,29 @@ class Canvas(pg.PlotWidget):
 
     def plot1(self, x, y):
         self.curve1.setData(x, y)
-        if any(y):
-            self._ymin = max(y.min(), self._ymin)
-            self._ymax = min(y.max(), self._ymax)
-        if any(self.curve2.yData):
+        if any(y) and any(self.curve2.yData):
+            self._ymin = min(y.min(), self.curve2.yData.min())
+            self._ymax = max(y.max(), self.curve2.yData.max())
             self._ymedian = (median(y) + median(self.curve2.yData)) / 2
-        else:
+        elif any(y):
+            self._ymin = y.min()
+            self._ymax = y.max()
             self._ymedian = median(y)
+        else:
+            pass
 
     def plot2(self, x, y):
         self.curve2.setData(x, y)
-        if any(y):
-            self._ymin = max(y.min(), self._ymin)
-            self._ymax = min(y.max(), self._ymax)
-        if any(self.curve1.yData):
+        if any(y) and any(self.curve1.yData):
+            self._ymin = min(y.min(), self.curve1.yData.min())
+            self._ymax = max(y.max(), self.curve1.yData.max())
             self._ymedian = (median(y) + median(self.curve1.yData)) / 2
-        else:
+        elif any(y):
+            self._ymin = y.min()
+            self._ymax = y.max()
             self._ymedian = median(y)
+        else:
+            pass
 
     def refreshPen(self):
 

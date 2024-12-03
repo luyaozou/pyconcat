@@ -108,8 +108,8 @@ class PyCCMainWin(QtWidgets.QMainWindow):
                 data = load_xy_file(filename)
                 self.x1 = data[:, 0]
                 self.y1 = data[:, 1]
-                self.ui.canvasFull.plot1(self.x1, self.y1)
-                self.ui.canvasDetail.plot1(self.x1, self.y1)
+                self.ui.box1.inpYShift.setValue(0)
+                self.shift_y1(0)    # plot the data without y shift
                 self._adjust_range()
         except Exception as e:
             msg('Error', str(e))
@@ -121,8 +121,8 @@ class PyCCMainWin(QtWidgets.QMainWindow):
                 data = load_xy_file(filename)
                 self.x2 = data[:, 0]
                 self.y2 = data[:, 1]
-                self.ui.canvasFull.plot2(self.x2, self.y2)
-                self.ui.canvasDetail.plot2(self.x2, self.y2)
+                self.ui.box2.inpYShift.setValue(0)
+                self.shift_y2(0)    # plot the data without y shift
                 self._adjust_range()
         except Exception as e:
             msg('Error', str(e))
@@ -130,6 +130,7 @@ class PyCCMainWin(QtWidgets.QMainWindow):
     def clear_file_1(self):
         self.x1 = np.zeros(0)
         self.y1 = np.zeros(0)
+        self.ui.box1.inpYShift.setValue(0)
         self.ui.canvasFull.plot1(np.zeros(0), np.zeros(0))
         self.ui.canvasDetail.plot1(np.zeros(0), np.zeros(0))
         self._adjust_range()
@@ -137,6 +138,7 @@ class PyCCMainWin(QtWidgets.QMainWindow):
     def clear_file_2(self):
         self.x2 = np.zeros(0)
         self.y2 = np.zeros(0)
+        self.ui.box2.inpYShift.setValue(0)
         self.ui.canvasFull.plot2(np.zeros(0), np.zeros(0))
         self.ui.canvasDetail.plot2(np.zeros(0), np.zeros(0))
         self._adjust_range()
