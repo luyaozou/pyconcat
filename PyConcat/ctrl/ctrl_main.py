@@ -65,8 +65,10 @@ class PyCCMainWin(QtWidgets.QMainWindow):
         self.ui.box2.btnOpen.clicked.connect(self.open_file_2)
         self.ui.box1.btnClear.clicked.connect(self.clear_file_1)
         self.ui.box2.btnClear.clicked.connect(self.clear_file_2)
-        self.ui.box1.inpYShift.valueChanged[float].connect(self.shift_y1)
-        self.ui.box2.inpYShift.valueChanged[float].connect(self.shift_y2)
+        self.ui.box1.inpYShift.valueChanged.connect(self.transform_y1)
+        self.ui.box2.inpYShift.valueChanged.connect(self.transform_y2)
+        self.ui.box1.inpScale.valueChanged.connect(self.transform_y1)
+        self.ui.box2.inpScale.valueChanged.connect(self.transform_y2)
         self.ui.box3.btnConcat.clicked.connect(self.concat)
         self.ui.box3.btnSave.clicked.connect(self.save)
         self.ui.box3.btnOverride.clicked.connect(self.override)
@@ -109,7 +111,8 @@ class PyCCMainWin(QtWidgets.QMainWindow):
                 self.x1 = data[:, 0]
                 self.y1 = data[:, 1]
                 self.ui.box1.inpYShift.setValue(0)
-                self.shift_y1(0)    # plot the data without y shift
+                self.ui.box1.inpScale.setValue(1)
+                self.transform_y1()    # plot the data without y shift
                 self._adjust_range()
         except Exception as e:
             msg('Error', str(e))
@@ -122,7 +125,8 @@ class PyCCMainWin(QtWidgets.QMainWindow):
                 self.x2 = data[:, 0]
                 self.y2 = data[:, 1]
                 self.ui.box2.inpYShift.setValue(0)
-                self.shift_y2(0)    # plot the data without y shift
+                self.ui.box2.inpScale.setValue(1)
+                self.transform_y2()    # plot the data without y shift
                 self._adjust_range()
         except Exception as e:
             msg('Error', str(e))
@@ -131,6 +135,7 @@ class PyCCMainWin(QtWidgets.QMainWindow):
         self.x1 = np.zeros(0)
         self.y1 = np.zeros(0)
         self.ui.box1.inpYShift.setValue(0)
+        self.ui.box1.inpScale.setValue(1)
         self.ui.canvasFull.plot1(np.zeros(0), np.zeros(0))
         self.ui.canvasDetail.plot1(np.zeros(0), np.zeros(0))
         self._adjust_range()
@@ -139,17 +144,22 @@ class PyCCMainWin(QtWidgets.QMainWindow):
         self.x2 = np.zeros(0)
         self.y2 = np.zeros(0)
         self.ui.box2.inpYShift.setValue(0)
+        self.ui.box2.inpScale.setValue(1)
         self.ui.canvasFull.plot2(np.zeros(0), np.zeros(0))
         self.ui.canvasDetail.plot2(np.zeros(0), np.zeros(0))
         self._adjust_range()
 
-    def shift_y1(self, val):
-        self.ui.canvasFull.plot1(self.x1, self.y1 + val)
-        self.ui.canvasDetail.plot1(self.x1, self.y1 + val)
+    def transform_y1(self):
+        yshift = self.ui.box1.inpYShift.value()
+        scale = self.ui.box1.inpScale.value()
+        self.ui.canvasFull.plot1(self.x1, self.y1 * scale + yshift)
+        self.ui.canvasDetail.plot1(self.x1, self.y1 * scale + yshift)
 
-    def shift_y2(self, val):
-        self.ui.canvasFull.plot2(self.x2, self.y2 + val)
-        self.ui.canvasDetail.plot2(self.x2, self.y2 + val)
+    def transform_y2(self):
+        yshift = self.ui.box2.inpYShift.value()
+        scale = self.ui.box2.inpScale.value()
+        self.ui.canvasFull.plot2(self.x2, self.y2 * scale + yshift)
+        self.ui.canvasDetail.plot2(self.x2, self.y2 * scale + yshift)
 
     def _adjust_range(self):
         """ Adjust x range of the two curves """

@@ -108,6 +108,7 @@ class Canvas(pg.PlotWidget):
             self._ymedian = median(y)
         else:
             pass
+        self._zoom_y(1)
 
     def plot2(self, x, y):
         self.curve2.setData(x, y)
@@ -121,6 +122,7 @@ class Canvas(pg.PlotWidget):
             self._ymedian = median(y)
         else:
             pass
+        self._zoom_y(1)
 
     def refreshPen(self):
 
@@ -196,6 +198,7 @@ class Canvas(pg.PlotWidget):
         self._ymin = (self._ymin - self._ymedian) / factor + self._ymedian
         self._ymax = (self._ymax - self._ymedian) / factor + self._ymedian
         self.curve1.getViewBox().setYRange(self._ymin, self._ymax)
+        self.curve2.getViewBox().setYRange(self._ymin, self._ymax)
 
 
 class BoxFile(QtWidgets.QGroupBox):
