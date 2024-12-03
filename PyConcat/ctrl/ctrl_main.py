@@ -152,14 +152,18 @@ class PyCCMainWin(QtWidgets.QMainWindow):
     def transform_y1(self):
         yshift = self.ui.box1.inpYShift.value()
         scale = self.ui.box1.inpScale.value()
-        self.ui.canvasFull.plot1(self.x1, self.y1 * scale + yshift)
-        self.ui.canvasDetail.plot1(self.x1, self.y1 * scale + yshift)
+        ym = np.median(self.y1)
+        y_tr = (self.y1 - ym) * scale + ym + yshift
+        self.ui.canvasFull.plot1(self.x1, y_tr)
+        self.ui.canvasDetail.plot1(self.x1, y_tr)
 
     def transform_y2(self):
         yshift = self.ui.box2.inpYShift.value()
         scale = self.ui.box2.inpScale.value()
-        self.ui.canvasFull.plot2(self.x2, self.y2 * scale + yshift)
-        self.ui.canvasDetail.plot2(self.x2, self.y2 * scale + yshift)
+        ym = np.median(self.y2)
+        y_tr = (self.y2 - ym) * scale + ym + yshift
+        self.ui.canvasFull.plot2(self.x2, y_tr)
+        self.ui.canvasDetail.plot2(self.x2, y_tr)
 
     def _adjust_range(self):
         """ Adjust x range of the two curves """

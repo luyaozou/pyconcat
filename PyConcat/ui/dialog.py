@@ -138,7 +138,7 @@ class DialogAbout(QtWidgets.QDialog):
         self.label = QtWidgets.QLabel()
         self.label.setText("""
         Python spectra Concatenation Tool.
-        Version 1.2.0
+        Version 1.2.1
         Developed by Luyao Zou (https://github.com/luyaozou/PyConcat)
 
         This GUI tool is used to concatenate two spectra files into one file.
