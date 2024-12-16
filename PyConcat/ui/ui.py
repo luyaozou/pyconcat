@@ -194,6 +194,9 @@ class Canvas(pg.PlotWidget):
             else:
                 self._zoom_y(0.8)
 
+    def mouseDragEvent(self, ev):
+        ev.ignore()
+
     def _zoom_y(self, factor):
         self._ymin = (self._ymin - self._ymedian) / factor + self._ymedian
         self._ymax = (self._ymax - self._ymedian) / factor + self._ymedian
