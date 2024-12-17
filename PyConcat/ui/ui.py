@@ -247,7 +247,8 @@ class BoxConcat(QtWidgets.QGroupBox):
         self.setTitle('Concatenated')
 
         self.btnConcat = QtWidgets.QPushButton('Concatenate')
-        self.btnOverride = QtWidgets.QPushButton('Override File 1')
+        self.btnReplace = QtWidgets.QPushButton('Replace 2 on 1')
+        self.btnOverride = QtWidgets.QPushButton('Result → File 1')
         self.btnSave = QtWidgets.QPushButton('Save (Ctrl+S)')
         self.btnSave.setShortcut('Ctrl+S')
         self.btnClear = QtWidgets.QPushButton('Clear')
@@ -269,6 +270,7 @@ class BoxConcat(QtWidgets.QGroupBox):
         thisLayout = QtWidgets.QVBoxLayout()
         thisLayout.setAlignment(QtCore.Qt.AlignTop | QtCore.Qt.AlignLeft)
         thisLayout.addWidget(self.btnConcat)
+        thisLayout.addWidget(self.btnReplace)
         thisLayout.addWidget(self.btnOverride)
         thisLayout.addWidget(self.btnSave)
         thisLayout.addWidget(self.btnClear)

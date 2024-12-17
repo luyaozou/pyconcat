@@ -43,6 +43,11 @@ class PyCCMainWin(QtWidgets.QMainWindow):
 
         # load main UI
         self.ui = MainUI(self.prefs, parent=self)
+        # rename button and set shortcut
+        self.ui.box1.btnOpen.setShortcut('Ctrl+O')
+        self.ui.box1.btnOpen.setToolTip('Hot key: Ctrl+O')
+        self.ui.box2.btnOpen.setShortcut('Ctrl+Shift+O')
+        self.ui.box2.btnOpen.setToolTip('Hot key: Ctrl+Shift+O')
 
         # create dialog windows
         self.dPref = DialogPref(parent=self)
@@ -69,7 +74,8 @@ class PyCCMainWin(QtWidgets.QMainWindow):
         self.ui.box2.inpYShift.valueChanged.connect(self.transform_y2)
         self.ui.box1.inpScale.valueChanged.connect(self.transform_y1)
         self.ui.box2.inpScale.valueChanged.connect(self.transform_y2)
-        self.ui.box3.btnConcat.clicked.connect(self.concat)
+        self.ui.box3.btnConcat.clicked.connect(self.concat_or_replace)
+        self.ui.box3.btnReplace.clicked.connect(lambda: self.concat_or_replace(True))
         self.ui.box3.btnSave.clicked.connect(self.save)
         self.ui.box3.btnOverride.clicked.connect(self.override)
         self.ui.box3.btnClear.clicked.connect(self.clear_concat)
@@ -202,7 +208,7 @@ class PyCCMainWin(QtWidgets.QMainWindow):
             except Exception as e:
                 msg('Error', str(e))
 
-    def concat(self):
+    def concat_or_replace(self, replace=False):
         # get settings
         avg1 = self.ui.box1.inpAvg.value()
         scale1 = self.ui.box1.inpScale.value()
@@ -223,9 +229,6 @@ class PyCCMainWin(QtWidgets.QMainWindow):
             x2_to_cat = x2[(x2 > xo_min) & (x2 < xo_max)]
             y1_to_cat = y1[(x1 > xo_min) & (x1 < xo_max)]
             y2_to_cat = y2[(x2 > xo_min) & (x2 < xo_max)]
-            if x1_to_cat.shape != x2_to_cat.shape:
-                msg('Error', 'The two data have different dimensions')
-                return None
         except Exception as e:
             msg('Error', str(e))
             return None
@@ -245,9 +248,19 @@ class PyCCMainWin(QtWidgets.QMainWindow):
             x_right = x2[x2 >= xo_max]
             y_right = y2[x2 >= xo_max]
         # 3. concatenate middle part
-        y_cat = (y1_to_cat * avg1 + y2_to_cat * avg2) / (avg1 + avg2)
+        # if replace=True, replace the middle part
+        if replace:
+            x_cat = x2_to_cat
+            y_cat = y2_to_cat
+        else:
+            if x1_to_cat.shape != x2_to_cat.shape:
+                msg('Error', 'The two data have different dimensions')
+                return None
+            else:
+                x_cat = x1_to_cat
+                y_cat = (y1_to_cat * avg1 + y2_to_cat * avg2) / (avg1 + avg2)
         # put everything together
-        self.xt = np.concatenate((x_left, x1_to_cat, x_right))
+        self.xt = np.concatenate((x_left, x_cat, x_right))
         self.yt = np.concatenate((y_left, y_cat, y_right))
         # plot
         self.ui.canvasCC.plot1(self.xt, self.yt)

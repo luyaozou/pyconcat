@@ -6,6 +6,7 @@
 from PyQt5 import QtWidgets, QtCore
 from PyConcat.ui.common import create_int_spin_box, create_double_spin_box
 from PyConcat.ui.common import ColorPicker
+from PyConcat.libs.lib import VERSION
 
 
 class DialogPref(QtWidgets.QDialog):
@@ -136,9 +137,9 @@ class DialogAbout(QtWidgets.QDialog):
 
 
         self.label = QtWidgets.QLabel()
-        self.label.setText("""
+        self.label.setText(f"""
         Python spectra Concatenation Tool.
-        Version 1.2.2
+        Version {VERSION:s}
         Developed by Luyao Zou (https://github.com/luyaozou/PyConcat)
 
         This GUI tool is used to concatenate two spectra files into one file.

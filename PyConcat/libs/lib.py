@@ -15,7 +15,7 @@ import os
 # ------------------------------------------
 # ------ MESSAGE CONSTANT DECLARATION ------
 # ------------------------------------------
-VERSION = '1.2.2'
+VERSION = '1.3.0'
 
 _FILE_ERR_MSG = {0: '',  # Silent
                  1: '{:s} does not exist',  # FileNotFoundError
@@ -192,4 +192,3 @@ def _txt_fmt(file_name, maxrow):
     a_file.close()
 
     return delm, n_hd, is_eof
-
